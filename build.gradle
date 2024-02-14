@@ -1,0 +1,33 @@
+plugins {
+    id "java-library"
+    id "maven-publish"
+}
+
+group = "com.github.muscaa"
+version = "1.0.0"
+
+repositories {
+    mavenCentral()
+    maven { url "https://jitpack.io" }
+}
+
+dependencies {
+	
+}
+
+java {
+	withSourcesJar()
+	withJavadocJar()
+	
+	toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+			from components.java
+        }
+    }
+}
