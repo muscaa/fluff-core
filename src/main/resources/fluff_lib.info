@@ -12,8 +12,12 @@ author muscaa
 id fluff-core
 
 
-# (optional) Library dependencies, that need to be initialized before this one, in "{author}/{id}" format, separated by commas
-# depends muscaa/fluff-core # muscaa/fluff-core is always initialized first so its not needed, its just an example
+# (optional) Library dependencies, that need to be
+# initialized before this one, in "{author}/{id}" format,
+# separated by commas
+# depends muscaa/fluff-core # muscaa/fluff-core is always
+							# initialized first so its not
+							# needed, its just an example
 
 
 # (optional) The url where to find this library
