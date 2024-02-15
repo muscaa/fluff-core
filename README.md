@@ -13,28 +13,28 @@ To integrate Fluff Core into your project, add the following dependency:
 **Gradle**
 ```gradle
 repositories {
-    maven { url "https://jitpack.io" }
+	maven { url "https://jitpack.io" }
 }
 
 dependencies {
-    implementation "com.github.muscaa:fluff-core:VERSION"
+	implementation "com.github.muscaa:fluff-core:VERSION"
 }
 ```
 **Maven**
 ```maven
 <repositories>
-    <repository>
-        <id>jitpack.io</id>
-        <url>https://jitpack.io</url>
-    </repository>
+	<repository>
+		<id>jitpack.io</id>
+		<url>https://jitpack.io</url>
+	</repository>
 </repositories>
 
 <dependencies>
-    <dependency>
-        <groupId>com.github.muscaa</groupId>
-        <artifactId>fluff-core</artifactId>
-        <version>VERSION</version>
-    </dependency>
+	<dependency>
+		<groupId>com.github.muscaa</groupId>
+		<artifactId>fluff-core</artifactId>
+		<version>VERSION</version>
+	</dependency>
 </dependencies>
 ```
 Replace `VERSION` with the latest release available on [JitPack](https://jitpack.io/#muscaa/fluff-core).
