@@ -1,0 +1,22 @@
+v1
+# first line must always be the lib supplier id you want to use, without any comments after
+
+
+# (required) the author
+author muscaa
+
+
+# (required) library id
+id fluff-core
+
+
+# (optional) library dependencies, that need to be initialized before this one, in "{author}/{id}" format, separated by commas
+# depends muscaa/fluff-core # muscaa/fluff-core is always initialized first so its not needed, its just an example
+
+
+# (optional) the url where to find the library
+# url https://github.com/muscaa/fluff-core
+
+
+# (optional) main lib class that will be initialized
+class fluff.core.FluffCore
