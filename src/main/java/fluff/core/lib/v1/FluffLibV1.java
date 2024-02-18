@@ -39,6 +39,8 @@ public class FluffLibV1 implements IFluffLib {
 	                .If(Objects::nonNull, v -> {
 	                    List<IFluffLib> list = new ArrayList<>();
 	                    for (String d : v.split(",")) {
+	                    	d = d.trim();
+	                    	
 	                        String[] split = d.split("/");
 	                        if (split.length != 2) throw new LibraryException(d + " is not a valid dependency!");
 	                        
