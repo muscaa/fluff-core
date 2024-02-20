@@ -59,13 +59,14 @@ public class FluffCore {
                     
                     LIBS.add(lib);
                     remaining.remove(i);
-                    
-                    System.out.println("loaded " + lib.getID());
                 } else {
                     i++;
                     if (i >= remaining.size()) i = 0;
                 }
-            } catch (Exception e) {}
+            } catch (Exception e) {
+            	URL url = remaining.remove(i);
+            	remaining.add(url);
+            }
         }
     }
     
@@ -86,7 +87,7 @@ public class FluffCore {
      * @return a list of loaded Fluff libraries
      */
     public static List<IFluffLib> getLibs() {
-        return LIBS;
+        return List.copyOf(LIBS);
     }
     
     /**

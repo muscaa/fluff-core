@@ -96,7 +96,7 @@ public class FluffLibV1 implements IFluffLib {
     
     @Override
     public List<IFluffLib> getDependencies() {
-        return dependencies;
+        return List.copyOf(dependencies);
     }
     
     @Override
