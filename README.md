@@ -4,7 +4,11 @@
 
 ## Description
 
-Fluff Core serves as the essential API for all Fluff libraries.
+Fluff Core serves as the core API for all Fluff libraries.
+
+### Requirements
+
+- Java 17
 
 ## Usage
 
@@ -21,7 +25,7 @@ dependencies {
 }
 ```
 **Maven**
-```maven
+```xml
 <repositories>
     <repository>
         <id>jitpack.io</id>
@@ -49,7 +53,7 @@ FluffCore.init();
 
 ### Developing Libraries
 
-Copy the following text to `src/main/resources/fluff_lib.info` and edit it as you wish:
+Copy the following text to `src/main/resources/fluff_lib.info` in your project and edit it as you wish:
 ```info
 v1
 # First line must always be the Lib Supplier ID you want
