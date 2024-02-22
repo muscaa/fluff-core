@@ -12,7 +12,7 @@ Fluff Core serves as the core API for all Fluff libraries.
 
 ## Usage
 
-To integrate Fluff Core into your project, add the following dependency:
+To integrate it into your project, add the following dependency:
 
 **Gradle**
 ```gradle
