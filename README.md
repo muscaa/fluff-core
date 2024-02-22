@@ -4,7 +4,7 @@
 
 ## Description
 
-Fluff Core serves as the core API for all Fluff libraries.
+Core API for all Fluff libraries.
 
 ### Requirements
 
