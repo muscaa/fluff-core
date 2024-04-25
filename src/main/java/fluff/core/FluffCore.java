@@ -34,7 +34,7 @@ public class FluffCore {
         if (INITIALIZED) return;
         INITIALIZED = true;
         
-        putLibraryInfoSupplier("v1", FluffLibV1::new);
+        registerSupplier("v1", FluffLibV1::new);
         
         List<URL> remaining = new ArrayList<>();
         ClassLoader.getSystemClassLoader()
@@ -76,7 +76,7 @@ public class FluffCore {
      * @param id the ID with which the specified supplier is to be associated
      * @param provider the supplier to be associated with the specified ID
      */
-    public static void putLibraryInfoSupplier(String id, IFluffLibSupplier provider) {
+    public static void registerSupplier(String id, IFluffLibSupplier provider) {
         LIBINFO_SUPPLIERS.put(id, provider);
     }
 
