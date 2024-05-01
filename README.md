@@ -1,6 +1,7 @@
 # Fluff Core
 
-[![](https://jitpack.io/v/muscaa/fluff-core.svg)](https://jitpack.io/#muscaa/fluff-core) [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![](https://jitpack.io/v/muscaa/fluff-core.svg)](https://jitpack.io/#muscaa/fluff-core)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 ## Description
 
