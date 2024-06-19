@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import fluff.core.FluffCore;
 import fluff.core.lib.IFluffLib;
+import fluff.core.lib.ILoadableFluffLib;
 import fluff.core.lib.LibraryException;
 import fluff.core.lib.LibraryMain;
 import fluff.core.lib.info.LibraryInfoReader;
@@ -15,11 +15,11 @@ import fluff.core.lib.info.LibraryInfoReader;
 /**
  * Implementation of the {@link IFluffLib} interface for version 1 library info supplier.
  */
-public class FluffLibV1 implements IFluffLib {
+public class FluffLibV1 implements ILoadableFluffLib {
     
     private final String author;
     private final String id;
-    private final List<IFluffLib> dependencies;
+    private final List<String> dependencies;
     private final String url;
     private final Class<?> libClass;
     
@@ -29,27 +29,18 @@ public class FluffLibV1 implements IFluffLib {
      * @param r the LibraryInfoReader containing the information required to initialize the library
      * @throws Exception if an error occurs during initialization
      */
-    public FluffLibV1(LibraryInfoReader r) throws Exception {
-        author = r.required("author", "author property missing!")
+    public FluffLibV1(LibraryInfoReader r) throws LibraryException {
+        author = r.required("author", "Property missing: author")
                 	.String();
-        id = r.required("id", "id property missing!")
+        id = r.required("id", "Property missing: id")
                 	.String();
         dependencies = r.optional("depends")
 	                .transform(List.class)
 	                .If(Objects::nonNull, v -> {
-	                    List<IFluffLib> list = new ArrayList<>();
-	                    for (String d : v.split(",")) {
-	                    	d = d.trim();
-	                    	
-	                        String[] split = d.split("/");
-	                        if (split.length != 2) throw new LibraryException(d + " is not a valid dependency!");
-	                        
-	                        if (split[0].equals(author) && split[1].equals(id)) continue;
-	                        
-	                        IFluffLib dep = FluffCore.findLib(split[0], split[1]);
-	                        if (dep == null) throw new LibraryException("Dependency not loaded!");
-	                        
-	                        list.add(dep);
+	                    List<String> list = new ArrayList<>();
+	                    for (String tag : v.split(",")) {
+	                    	tag = tag.trim();
+	                        list.add(tag);
 	                    }
 	                    return list;
 	                })
@@ -59,29 +50,27 @@ public class FluffLibV1 implements IFluffLib {
         			.String();
         libClass = r.optional("class")
 	                .transform(Class.class)
-	                .If(Objects::nonNull, v -> {
-	                    Class<?> clazz = this.getClass().getClassLoader().loadClass(v);
-	                    for (Method m : clazz.getDeclaredMethods()) {
-	                        if (!m.isAnnotationPresent(LibraryMain.class)) continue;
-	                        if (!Modifier.isStatic(m.getModifiers())) continue;
-	                        
-	                        //LibraryMain a = m.getAnnotation(LibraryMain.class);
-	                        
-	                        try {
-	                            m.setAccessible(true);
-	                            m.invoke(null);
-	                        } catch (Exception e) {
-	                            e.printStackTrace();
-	                        }
-	                    }
-	                    return clazz;
-	                })
+	                .If(Objects::nonNull, v -> this.getClass().getClassLoader().loadClass(v))
 	                .Result();
     }
     
     @Override
-    public String getSupplierID() {
-        return "v1";
+    public void load() throws LibraryException {
+    	if (libClass == null) return;
+    	
+    	for (Method m : libClass.getDeclaredMethods()) {
+            if (!m.isAnnotationPresent(LibraryMain.class)) continue;
+            if (!Modifier.isStatic(m.getModifiers())) continue;
+            
+            //LibraryMain a = m.getAnnotation(LibraryMain.class);
+            
+            try {
+                m.setAccessible(true);
+                m.invoke(null);
+            } catch (Exception e) {
+                throw new LibraryException(e);
+            }
+        }
     }
     
     @Override
@@ -95,7 +84,7 @@ public class FluffLibV1 implements IFluffLib {
     }
     
     @Override
-    public List<IFluffLib> getDependencies() {
+    public List<String> getDependencies() {
         return List.copyOf(dependencies);
     }
     

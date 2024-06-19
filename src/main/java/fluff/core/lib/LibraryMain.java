@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Indicates that the annotated method should be called when loading the Fluff library.
+ * Indicates that the annotated method should be called when loading.
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

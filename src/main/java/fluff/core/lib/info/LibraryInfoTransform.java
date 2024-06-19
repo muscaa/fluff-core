@@ -1,5 +1,7 @@
 package fluff.core.lib.info;
 
+import fluff.core.lib.LibraryException;
+
 /**
  * Utility class for transforming values during library information processing.
  *
@@ -30,7 +32,7 @@ public class LibraryInfoTransform<F, T> {
      * @return a LibraryInfoTransformIf instance
      * @throws Exception if an error occurs during the transformation
      */
-    public LibraryInfoTransformIf<F, T> If(ExceptionFunction<Boolean, F> ifFunc, ExceptionFunction<T, F> resultFunc) throws Exception {
+    public LibraryInfoTransformIf<F, T> If(ExceptionFunction<Boolean, F> ifFunc, ExceptionFunction<T, F> resultFunc) throws LibraryException {
         return new LibraryInfoTransformIf<>(this, value, ifFunc, resultFunc);
     }
     
@@ -42,7 +44,7 @@ public class LibraryInfoTransform<F, T> {
      * @return a LibraryInfoTransform instance with the transformed value
      * @throws Exception if an error occurs during the transformation
      */
-    public <V> LibraryInfoTransform<T, V> transform(Class<V> clazz) throws Exception {
+    public <V> LibraryInfoTransform<T, V> transform(Class<V> clazz) throws LibraryException {
         return new LibraryInfoTransform<>(null, Result());
     }
     
@@ -52,7 +54,7 @@ public class LibraryInfoTransform<F, T> {
      * @return the transformed value
      * @throws Exception if an error occurs during the transformation
      */
-    public T Result() throws Exception {
+    public T Result() throws LibraryException {
         return parent != null ? parent.Result() : null;
     }
 }

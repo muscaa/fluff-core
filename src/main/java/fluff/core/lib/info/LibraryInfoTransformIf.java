@@ -1,5 +1,7 @@
 package fluff.core.lib.info;
 
+import fluff.core.lib.LibraryException;
+
 /**
  * Utility class for conditionally transforming values during library information processing.
  *
@@ -33,15 +35,19 @@ public class LibraryInfoTransformIf<F, T> extends LibraryInfoTransform<F, T> {
      * @return a LibraryInfoTransformIf instance representing the else case
      * @throws Exception if an error occurs during the transformation
      */
-    public LibraryInfoTransformIf<F, T> Else(ExceptionFunction<T, F> resultFunc) throws Exception {
+    public LibraryInfoTransformIf<F, T> Else(ExceptionFunction<T, F> resultFunc) throws LibraryException {
         return new LibraryInfoTransformIf<>(this, value, v -> !ifFunc.invoke(v), resultFunc);
     }
     
     @Override
-    public T Result() throws Exception {
-        if (ifFunc.invoke(value)) {
-            return resultFunc.invoke(value);
-        }
+    public T Result() throws LibraryException {
+    	try {
+    		if (ifFunc.invoke(value)) {
+                return resultFunc.invoke(value);
+            }
+		} catch (Exception e) {
+			throw new LibraryException(e);
+		}
         return super.Result();
     }
 }

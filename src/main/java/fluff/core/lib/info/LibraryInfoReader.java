@@ -1,6 +1,7 @@
 package fluff.core.lib.info;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.rmi.UnexpectedException;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +21,7 @@ public class LibraryInfoReader {
      * @param br the BufferedReader containing the library information
      * @throws Exception if an error occurs while reading the information
      */
-    public LibraryInfoReader(BufferedReader br) throws Exception {
+    public LibraryInfoReader(BufferedReader br) throws IOException {
         String line;
         while ((line = br.readLine()) != null) {
             line = line.strip();
@@ -72,7 +73,7 @@ public class LibraryInfoReader {
      * @return the value of the property if present
      * @throws Exception if the property is not present
      */
-    public LibraryInfoValue required(String key, String exception) throws Exception {
+    public LibraryInfoValue required(String key, String exception) throws LibraryException {
         return required(key, new LibraryException(exception));
     }
     
@@ -84,7 +85,7 @@ public class LibraryInfoReader {
      * @return the value of the property if present
      * @throws Exception if the property is not present
      */
-    public LibraryInfoValue required(String key, Exception exception) throws Exception {
+    public LibraryInfoValue required(String key, LibraryException exception) throws LibraryException {
         if (!properties.containsKey(key)) throw exception;
         return properties.get(key);
     }

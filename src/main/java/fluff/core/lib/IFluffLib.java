@@ -6,14 +6,7 @@ import java.util.List;
  * Interface representing a Fluff library.
  */
 public interface IFluffLib {
-    
-    /**
-     * Retrieves the ID of the supplier of this library.
-     * 
-     * @return the ID of the supplier
-     */
-    String getSupplierID();
-    
+	
     /**
      * Retrieves the author of the library.
      * 
@@ -33,7 +26,7 @@ public interface IFluffLib {
      * 
      * @return a list of dependencies of the library
      */
-    List<IFluffLib> getDependencies();
+    List<String> getDependencies();
     
     /**
      * Retrieves the URL of the library, or null if it is not available.

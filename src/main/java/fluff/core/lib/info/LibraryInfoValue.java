@@ -1,5 +1,7 @@
 package fluff.core.lib.info;
 
+import fluff.core.lib.LibraryException;
+
 /**
  * Represents a value parsed from library information.
  */
@@ -42,8 +44,12 @@ public class LibraryInfoValue {
      * @return the value as a boolean
      * @throws Exception if the value cannot be parsed as a boolean
      */
-    public boolean Boolean() throws Exception {
-        return Boolean.parseBoolean(value);
+    public boolean Boolean() throws LibraryException {
+    	try {
+    		return Boolean.parseBoolean(value);
+		} catch (Exception e) {
+			throw new LibraryException(e);
+		}
     }
     
     /**
@@ -52,8 +58,12 @@ public class LibraryInfoValue {
      * @return the value as an integer
      * @throws Exception if the value cannot be parsed as an integer
      */
-    public int Int() throws Exception {
-        return Integer.parseInt(value);
+    public int Int() throws LibraryException {
+    	try {
+    		return Integer.parseInt(value);
+		} catch (Exception e) {
+			throw new LibraryException(e);
+		}
     }
     
     /**
@@ -62,8 +72,12 @@ public class LibraryInfoValue {
      * @return the value as a float
      * @throws Exception if the value cannot be parsed as a float
      */
-    public float Float() throws Exception {
-        return Float.parseFloat(value);
+    public float Float() throws LibraryException {
+    	try {
+    		return Float.parseFloat(value);
+		} catch (Exception e) {
+			throw new LibraryException(e);
+		}
     }
     
     /**
@@ -72,8 +86,12 @@ public class LibraryInfoValue {
      * @return the value as a long
      * @throws Exception if the value cannot be parsed as a long
      */
-    public long Long() throws Exception {
-        return Long.parseLong(value);
+    public long Long() throws LibraryException {
+    	try {
+    		return Long.parseLong(value);
+		} catch (Exception e) {
+			throw new LibraryException(e);
+		}
     }
     
     /**
@@ -82,8 +100,12 @@ public class LibraryInfoValue {
      * @return the value as a double
      * @throws Exception if the value cannot be parsed as a double
      */
-    public double Double() throws Exception {
-        return Double.parseDouble(value);
+    public double Double() throws LibraryException {
+    	try {
+    		return Double.parseDouble(value);
+		} catch (Exception e) {
+			throw new LibraryException(e);
+		}
     }
     
     /**
