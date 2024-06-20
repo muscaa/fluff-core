@@ -1,6 +1,6 @@
 package fluff.core.lib;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * Interface representing a Fluff library.
@@ -22,11 +22,11 @@ public interface IFluffLib {
     String getID();
     
     /**
-     * Retrieves the dependencies of the library, which may be an empty list.
+     * Retrieves the dependencies of the library, which may be an empty set.
      * 
-     * @return a list of dependencies of the library
+     * @return a set of dependencies of the library
      */
-    List<String> getDependencies();
+    Set<String> getDependencies();
     
     /**
      * Retrieves the URL of the library, or null if it is not available.
