@@ -44,10 +44,9 @@ public class FluffCore {
     }
     
     /**
-     * Associates the specified supplier with the specified ID in the library info suppliers map.
+     * Associates the specified supplier with its ID in the library info suppliers map.
      * 
-     * @param id the ID with which the specified supplier is to be associated
-     * @param provider the supplier to be associated with the specified ID
+     * @param supplier the supplier to be associated with the specified ID
      */
     public static void registerSupplier(IFluffLibSupplier supplier) {
         DependencyResolver.INFO_SUPPLIERS.put(supplier.getID(), supplier);
