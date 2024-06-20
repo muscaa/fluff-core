@@ -21,7 +21,9 @@ public class FluffLibV1 implements ILoadableFluffLib {
     private final String id;
     private final List<String> dependencies;
     private final String url;
-    private final Class<?> libClass;
+    private final String libClassName;
+    
+    private Class<?> libClass;
     
     /**
      * Constructs a new FluffLibV1 instance using the provided LibraryInfoReader.
@@ -48,15 +50,19 @@ public class FluffLibV1 implements ILoadableFluffLib {
 	                .Result();
         url = r.optional("url")
         			.String();
-        libClass = r.optional("class")
-	                .transform(Class.class)
-	                .If(Objects::nonNull, v -> this.getClass().getClassLoader().loadClass(v))
-	                .Result();
+        libClassName = r.optional("class")
+	                .String();
     }
     
     @Override
-    public void load() throws LibraryException {
-    	if (libClass == null) return;
+    public void load(ClassLoader loader) throws LibraryException {
+    	if (libClassName == null) return;
+    	
+    	try {
+			libClass = loader.loadClass(libClassName);
+		} catch (ClassNotFoundException e) {
+			throw new LibraryException(e);
+		}
     	
     	for (Method m : libClass.getDeclaredMethods()) {
             if (!m.isAnnotationPresent(LibraryMain.class)) continue;

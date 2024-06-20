@@ -18,25 +18,29 @@ class Dependency {
 	
 	private boolean loaded = false;
 	
+	int dependencyCount = 0;
+	
 	public Dependency(IFluffLibSupplier supplier, IFluffLib lib) {
 		this.supplier = supplier;
 		this.lib = lib;
 		this.tag = supplier.getTag(lib);
 	}
 	
-	public void load() throws LibraryException {
+	public void load(ClassLoader loader) throws LibraryException {
 		if (loaded) return;
 		
 		if (lib instanceof ILoadableFluffLib loadable) {
-			loadable.load();
+			loadable.load(loader);
 		}
 		
 		loaded = true;
 	}
 	
-	public void link(Dependency child) {
-		dependencies.add(child);
-		child.dependents.add(this);
+	public void link(Dependency dep) {
+		dependencies.add(dep);
+		dep.dependents.add(this);
+		
+		if (!dep.isLoaded()) dependencyCount++;
 	}
 	
 	public boolean isLoaded() {

@@ -29,15 +29,16 @@ public class FluffCore {
         
         registerSupplier(new FluffLibV1Supplier());
         
+        ClassLoader loader = FluffCore.class.getClassLoader();
+        
         List<URL> infos = new ArrayList<>();
-        FluffCore.class.getClassLoader()
-                .getResources("fluff_lib.info")
+        loader.getResources("fluff_lib.info")
                 .asIterator()
                 .forEachRemaining(url -> {
                     infos.add(url);
                 });
         
-        DependencyResolver.resolveAndLoad(infos);
+        DependencyResolver.resolveAndLoad(loader, infos);
         
         INITIALIZED = true;
     }

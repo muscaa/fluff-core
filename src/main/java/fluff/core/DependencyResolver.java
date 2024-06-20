@@ -23,27 +23,23 @@ class DependencyResolver {
     public static final Map<String, IFluffLibSupplier> INFO_SUPPLIERS = new HashMap<>();
     public static final Map<String, Dependency> LOADED = new HashMap<>();
     
-    public static void resolveAndLoad(List<URL> infos) throws LibraryException {
-    	List<URL> infosCopy = new ArrayList<>(infos);
+    public static void resolveAndLoad(ClassLoader loader, List<URL> infos) throws LibraryException {
+    	List<URL> unresolved = new ArrayList<>(infos);
     	
-    	while (!infosCopy.isEmpty()) {
-    		Map<String, Dependency> resolved = resolveAndRemove(infosCopy);
+    	while (!unresolved.isEmpty()) {
+    		Map<String, Dependency> resolved = resolve(unresolved);
     		
-    		load(resolved);
+    		load(loader, resolved);
     	}
     }
     
-    private static void load(Map<String, Dependency> resolved) throws LibraryException {
-    	Map<String, Integer> dependenciesMap = new HashMap<>();
+    private static void load(ClassLoader loader, Map<String, Dependency> resolved) throws LibraryException {
     	Queue<Dependency> queue = new LinkedList<>();
     	
     	for (Map.Entry<String, Dependency> e : resolved.entrySet()) {
-    		Dependency d = e.getValue();
-    		int dependencies = d.getDependencies().size();
+    		Dependency dep = e.getValue();
     		
-    		dependenciesMap.put(d.getTag(), dependencies);
-    		
-    		if (dependencies == 0) queue.add(d);
+    		if (dep.dependencyCount == 0) queue.add(dep);
     	}
     	
     	List<Dependency> sorted = new ArrayList<>();
@@ -52,11 +48,8 @@ class DependencyResolver {
     		Dependency current = queue.poll();
     		sorted.add(current);
     		
-    		for (Dependency dependent : current.getDependents()) {
-    			int dependencies = dependenciesMap.get(dependent.getTag()) - 1;
-    			dependenciesMap.put(dependent.getTag(), dependencies);
-    			
-    			if (dependencies == 0) queue.add(dependent);
+    		for (Dependency dnt : current.getDependents()) {
+    			if (--dnt.dependencyCount == 0) queue.add(dnt);
     		}
     	}
     	
@@ -65,26 +58,26 @@ class DependencyResolver {
             Set<String> recursionStack = new HashSet<>();
             
         	for (Map.Entry<String, Dependency> e : resolved.entrySet()) {
-        		Dependency d = e.getValue();
+        		Dependency dep = e.getValue();
         		
-        		if (detectCycle(d, visited, recursionStack)) {
+        		if (detectCycle(dep, visited, recursionStack)) {
                     throw new LibraryException("Cyclic dependency detected: " + recursionStack);
                 }
         	}
     	}
     	
     	for (Dependency d : sorted) {
-    		d.load();
+    		d.load(loader);
     		
     		LOADED.put(d.getTag(), d);
     	}
     }
     
-    private static Map<String, Dependency> resolveAndRemove(List<URL> infos) throws LibraryException {
+    private static Map<String, Dependency> resolve(List<URL> unresolved) throws LibraryException {
     	Map<String, Dependency> resolved = new HashMap<>();
     	
-    	for (int i = infos.size() - 1; i >= 0; i--) {
-    		URL info = infos.get(i);
+    	for (int i = unresolved.size() - 1; i >= 0; i--) {
+    		URL info = unresolved.get(i);
     		
     		try (BufferedReader br = new BufferedReader(new InputStreamReader(info.openStream()))) {
     			String supplierID = br.readLine();
@@ -96,13 +89,17 @@ class DependencyResolver {
     			}
     			
 				IFluffLib lib = supplier.createLibrary(new LibraryInfoReader(br));
-				Dependency d = new Dependency(supplier, lib);
+				Dependency dep = new Dependency(supplier, lib);
 				
-				if (LOADED.containsKey(d.getTag())) throw new LibraryException("Library already loaded: " + d.getTag());
-				if (resolved.containsKey(d.getTag())) throw new LibraryException("Overlapping tag: " + d.getTag());
+				if (LOADED.containsKey(dep.getTag())) {
+					throw new LibraryException("Library already loaded: " + dep.getTag());
+				}
+				if (resolved.containsKey(dep.getTag())) {
+					throw new LibraryException("Overlapping tag: " + dep.getTag());
+				}
 				
-				resolved.put(d.getTag(), d);
-				infos.remove(i);
+				resolved.put(dep.getTag(), dep);
+				unresolved.remove(i);
             } catch (IOException e) {
             	throw new LibraryException(e);
             }
@@ -111,38 +108,36 @@ class DependencyResolver {
     	if (resolved.isEmpty()) throw new LibraryException("Couldn't resolve dependencies!");
     	
     	for (Map.Entry<String, Dependency> e : resolved.entrySet()) {
-    		Dependency d = e.getValue();
+    		Dependency dep = e.getValue();
     		
-    		for (String tag : d.getLib().getDependencies()) {
-    			if (LOADED.containsKey(tag)) continue;
-    			if (!resolved.containsKey(tag)) throw new LibraryException("Missing dependency: " + tag);
-    			
-    			d.link(resolved.get(tag));
+    		for (String tag : dep.getLib().getDependencies()) {
+    			if (LOADED.containsKey(tag)) {
+    				dep.link(LOADED.get(tag));
+    			} else if (resolved.containsKey(tag)) {
+    				dep.link(resolved.get(tag));
+    			} else {
+    				throw new LibraryException("Missing dependency: " + tag);
+    			}
     		}
     	}
     	
     	return resolved;
     }
     
-    private static boolean detectCycle(Dependency d, Set<String> visited, Set<String> recursionStack) {
-        if (recursionStack.contains(d.getTag())) {
-            return true;
+    private static boolean detectCycle(Dependency dep, Set<String> visited, Set<String> recursionStack) {
+    	if (dep.isLoaded()) return false;
+        if (recursionStack.contains(dep.getTag())) return true;
+        if (visited.contains(dep.getTag())) return false;
+        
+        visited.add(dep.getTag());
+        recursionStack.add(dep.getTag());
+        
+        for (Dependency dependent : dep.getDependents()) {
+            if (detectCycle(dependent, visited, recursionStack)) return true;
         }
         
-        if (visited.contains(d.getTag())) {
-            return false;
-        }
+        recursionStack.remove(dep.getTag());
         
-        visited.add(d.getTag());
-        recursionStack.add(d.getTag());
-        
-        for (Dependency dependent : d.getDependents()) {
-            if (detectCycle(dependent, visited, recursionStack)) {
-                return true;
-            }
-        }
-        
-        recursionStack.remove(d.getTag());
         return false;
     }
 }
