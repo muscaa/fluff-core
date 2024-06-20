@@ -1,9 +1,12 @@
 plugins {
-    id "com.github.muscaa.fluff-gradle" version "1.0.11"
+    id "com.github.muscaa.fluff-gradle" version "1.0.12"
 }
 
 fluff {
-	include = [ "LICENSE", "NOTICE" ]
+	include = [
+		"LICENSE": "META-INF/LICENSE",
+		"NOTICE": "META-INF/NOTICE"
+	]
 }
 
 repositories {
