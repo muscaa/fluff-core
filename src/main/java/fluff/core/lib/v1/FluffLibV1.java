@@ -50,7 +50,7 @@ public class FluffLibV1 implements ILoadableFluffLib {
 	                })
 	                .Else(v -> new HashSet<>())
 	                .Result();
-        if (!author.equals("muscaa") && !id.equals("fluff-core")) dependencies.add("muscaa/fluff-core");
+        if (!author.equals("muscaa") || !id.equals("fluff-core")) dependencies.add("muscaa/fluff-core");
         
         url = r.optional("url")
         			.String();
