@@ -18,11 +18,21 @@ import fluff.core.lib.IFluffLibSupplier;
 import fluff.core.lib.LibraryException;
 import fluff.core.lib.info.LibraryInfoReader;
 
+/**
+ * Handles the resolution and loading of library dependencies.
+ */
 class DependencyResolver {
 	
     public static final Map<String, IFluffLibSupplier> INFO_SUPPLIERS = new HashMap<>();
     public static final Map<String, Dependency> LOADED = new HashMap<>();
     
+    /**
+     * Resolves and loads dependencies from the provided URLs using the specified class loader.
+     *
+     * @param loader the class loader to use for loading
+     * @param infos the list of URLs to resolve and load
+     * @throws LibraryException if an error occurs during resolution or loading
+     */
     public static void resolveAndLoad(ClassLoader loader, List<URL> infos) throws LibraryException {
     	List<URL> unresolved = new ArrayList<>(infos);
     	
@@ -33,6 +43,13 @@ class DependencyResolver {
     	}
     }
     
+    /**
+     * Loads the resolved dependencies using the specified class loader.
+     *
+     * @param loader the class loader to use for loading
+     * @param resolved the map of resolved dependencies to load
+     * @throws LibraryException if an error occurs during loading
+     */
     private static void load(ClassLoader loader, Map<String, Dependency> resolved) throws LibraryException {
     	Queue<Dependency> queue = new LinkedList<>();
     	
@@ -73,6 +90,13 @@ class DependencyResolver {
     	}
     }
     
+    /**
+     * Resolves dependencies from the provided list of URLs.
+     *
+     * @param unresolved the list of unresolved URLs
+     * @return a map of resolved dependencies
+     * @throws LibraryException if an error occurs during resolution
+     */
     private static Map<String, Dependency> resolve(List<URL> unresolved) throws LibraryException {
     	Map<String, Dependency> resolved = new HashMap<>();
     	
@@ -124,6 +148,14 @@ class DependencyResolver {
     	return resolved;
     }
     
+    /**
+     * Detects cycles in the dependency graph.
+     *
+     * @param dep the dependency to check
+     * @param visited the set of visited dependencies
+     * @param recursionStack the set of dependencies in the current recursion stack
+     * @return true if a cycle is detected, false otherwise
+     */
     private static boolean detectCycle(Dependency dep, Set<String> visited, Set<String> recursionStack) {
     	if (dep.isLoaded()) return false;
         if (recursionStack.contains(dep.getTag())) return true;

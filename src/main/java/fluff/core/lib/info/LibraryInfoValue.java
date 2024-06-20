@@ -42,70 +42,70 @@ public class LibraryInfoValue {
      * Retrieves the value as a boolean.
      *
      * @return the value as a boolean
-     * @throws Exception if the value cannot be parsed as a boolean
+     * @throws LibraryException if the value cannot be parsed as a boolean
      */
     public boolean Boolean() throws LibraryException {
-    	try {
-    		return Boolean.parseBoolean(value);
-		} catch (Exception e) {
-			throw new LibraryException(e);
-		}
+        try {
+            return Boolean.parseBoolean(value);
+        } catch (Exception e) {
+            throw new LibraryException(e);
+        }
     }
     
     /**
      * Retrieves the value as an integer.
      *
      * @return the value as an integer
-     * @throws Exception if the value cannot be parsed as an integer
+     * @throws LibraryException if the value cannot be parsed as an integer
      */
     public int Int() throws LibraryException {
-    	try {
-    		return Integer.parseInt(value);
-		} catch (Exception e) {
-			throw new LibraryException(e);
-		}
+        try {
+            return Integer.parseInt(value);
+        } catch (Exception e) {
+            throw new LibraryException(e);
+        }
     }
     
     /**
      * Retrieves the value as a float.
      *
      * @return the value as a float
-     * @throws Exception if the value cannot be parsed as a float
+     * @throws LibraryException if the value cannot be parsed as a float
      */
     public float Float() throws LibraryException {
-    	try {
-    		return Float.parseFloat(value);
-		} catch (Exception e) {
-			throw new LibraryException(e);
-		}
+        try {
+            return Float.parseFloat(value);
+        } catch (Exception e) {
+            throw new LibraryException(e);
+        }
     }
     
     /**
      * Retrieves the value as a long.
      *
      * @return the value as a long
-     * @throws Exception if the value cannot be parsed as a long
+     * @throws LibraryException if the value cannot be parsed as a long
      */
     public long Long() throws LibraryException {
-    	try {
-    		return Long.parseLong(value);
-		} catch (Exception e) {
-			throw new LibraryException(e);
-		}
+        try {
+            return Long.parseLong(value);
+        } catch (Exception e) {
+            throw new LibraryException(e);
+        }
     }
     
     /**
      * Retrieves the value as a double.
      *
      * @return the value as a double
-     * @throws Exception if the value cannot be parsed as a double
+     * @throws LibraryException if the value cannot be parsed as a double
      */
     public double Double() throws LibraryException {
-    	try {
-    		return Double.parseDouble(value);
-		} catch (Exception e) {
-			throw new LibraryException(e);
-		}
+        try {
+            return Double.parseDouble(value);
+        } catch (Exception e) {
+            throw new LibraryException(e);
+        }
     }
     
     /**

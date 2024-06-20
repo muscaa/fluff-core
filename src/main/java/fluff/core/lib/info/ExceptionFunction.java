@@ -6,6 +6,7 @@ package fluff.core.lib.info;
  * @param <R> the type of the result
  * @param <V> the type of the input value
  */
+@FunctionalInterface
 public interface ExceptionFunction<R, V> {
     
     /**

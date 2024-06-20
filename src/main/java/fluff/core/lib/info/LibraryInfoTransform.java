@@ -30,7 +30,7 @@ public class LibraryInfoTransform<F, T> {
      * @param ifFunc the condition function
      * @param resultFunc the transformation function
      * @return a LibraryInfoTransformIf instance
-     * @throws Exception if an error occurs during the transformation
+     * @throws LibraryException if an error occurs during the transformation
      */
     public LibraryInfoTransformIf<F, T> If(ExceptionFunction<Boolean, F> ifFunc, ExceptionFunction<T, F> resultFunc) throws LibraryException {
         return new LibraryInfoTransformIf<>(this, value, ifFunc, resultFunc);
@@ -42,7 +42,7 @@ public class LibraryInfoTransform<F, T> {
      * @param clazz the class representing the desired type
      * @param <V> the type to transform to
      * @return a LibraryInfoTransform instance with the transformed value
-     * @throws Exception if an error occurs during the transformation
+     * @throws LibraryException if an error occurs during the transformation
      */
     public <V> LibraryInfoTransform<T, V> transform(Class<V> clazz) throws LibraryException {
         return new LibraryInfoTransform<>(null, Result());
@@ -52,7 +52,7 @@ public class LibraryInfoTransform<F, T> {
      * Retrieves the transformed value.
      *
      * @return the transformed value
-     * @throws Exception if an error occurs during the transformation
+     * @throws LibraryException if an error occurs during the transformation
      */
     public T Result() throws LibraryException {
         return parent != null ? parent.Result() : null;

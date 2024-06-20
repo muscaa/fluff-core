@@ -62,6 +62,12 @@ public class FluffCore {
         return DependencyResolver.LOADED.values().stream().map(Dependency::getLib).toList();
     }
     
+    /**
+     * Finds a Fluff library by its tag.
+     * 
+     * @param tag the tag of the library to find
+     * @return the Fluff library with the specified tag, or null if not found
+     */
     public static IFluffLib findLib(String tag) {
         return DependencyResolver.LOADED.get(tag).getLib();
     }

@@ -12,33 +12,34 @@ import fluff.core.lib.LibraryException;
  * Utility class for reading library information from a BufferedReader.
  */
 public class LibraryInfoReader {
-	
+    
     protected final Map<String, LibraryInfoValue> properties = new HashMap<>();
     
     /**
-     * Constructs a new LibraryInfoReader and populates properties map with information read from the BufferedReader.
+     * Constructs a new LibraryInfoReader and populates the properties map with information read from the BufferedReader.
      * 
      * @param br the BufferedReader containing the library information
-     * @throws Exception if an error occurs while reading the information
+     * @throws IOException if an error occurs while reading the information
+     * @throws UnexpectedException if the line is not a valid property
      */
-    public LibraryInfoReader(BufferedReader br) throws IOException {
+    public LibraryInfoReader(BufferedReader br) throws IOException, UnexpectedException {
         String line;
         while ((line = br.readLine()) != null) {
-            line = line.strip();
+            line = line.trim();
             
             if (line.isEmpty()) continue;
             if (line.startsWith("#")) continue;
             
             int comment = line.indexOf('#');
             if (comment != -1) {
-                line = line.substring(0, comment).strip();
+                line = line.substring(0, comment).trim();
             }
             
             int space = line.indexOf(' ');
             if (space == -1) throw new UnexpectedException("\"" + line + "\" is not a valid property!");
             
             String key = line.substring(0, space);
-            String value = line.substring(space + 1).strip();
+            String value = line.substring(space + 1).trim();
             
             properties.put(key, new LibraryInfoValue(value));
         }
@@ -71,7 +72,7 @@ public class LibraryInfoReader {
      * @param key the key of the property
      * @param exception the exception to throw if the property is not present
      * @return the value of the property if present
-     * @throws Exception if the property is not present
+     * @throws LibraryException if the property is not present
      */
     public LibraryInfoValue required(String key, String exception) throws LibraryException {
         return required(key, new LibraryException(exception));
@@ -83,7 +84,7 @@ public class LibraryInfoReader {
      * @param key the key of the property
      * @param exception the exception to throw if the property is not present
      * @return the value of the property if present
-     * @throws Exception if the property is not present
+     * @throws LibraryException if the property is not present
      */
     public LibraryInfoValue required(String key, LibraryException exception) throws LibraryException {
         if (!properties.containsKey(key)) throw exception;

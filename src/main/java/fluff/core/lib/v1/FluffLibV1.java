@@ -29,7 +29,7 @@ public class FluffLibV1 implements ILoadableFluffLib {
      * Constructs a new FluffLibV1 instance using the provided LibraryInfoReader.
      * 
      * @param r the LibraryInfoReader containing the information required to initialize the library
-     * @throws Exception if an error occurs during initialization
+     * @throws LibraryException if an error occurs during initialization
      */
     public FluffLibV1(LibraryInfoReader r) throws LibraryException {
         author = r.required("author", "Property missing: author")
@@ -54,6 +54,12 @@ public class FluffLibV1 implements ILoadableFluffLib {
 	                .String();
     }
     
+    /**
+     * Loads the library class and invokes methods annotated with {@link LibraryMain}.
+     * 
+     * @param loader the ClassLoader to use for loading the library class
+     * @throws LibraryException if an error occurs while loading the library class or invoking methods
+     */
     @Override
     public void load(ClassLoader loader) throws LibraryException {
     	if (libClassName == null) return;
@@ -68,8 +74,6 @@ public class FluffLibV1 implements ILoadableFluffLib {
             if (!m.isAnnotationPresent(LibraryMain.class)) continue;
             if (!Modifier.isStatic(m.getModifiers())) continue;
             
-            //LibraryMain a = m.getAnnotation(LibraryMain.class);
-            
             try {
                 m.setAccessible(true);
                 m.invoke(null);
@@ -79,26 +83,51 @@ public class FluffLibV1 implements ILoadableFluffLib {
         }
     }
     
+    /**
+     * Retrieves the author of the library.
+     * 
+     * @return the author of the library
+     */
     @Override
     public String getAuthor() {
         return author;
     }
     
+    /**
+     * Retrieves the ID of the library.
+     * 
+     * @return the ID of the library
+     */
     @Override
     public String getID() {
         return id;
     }
     
+    /**
+     * Retrieves the dependencies of the library.
+     * 
+     * @return a list of dependencies of the library
+     */
     @Override
     public List<String> getDependencies() {
         return List.copyOf(dependencies);
     }
     
+    /**
+     * Retrieves the URL of the library, or null if it is not available.
+     * 
+     * @return the URL of the library, or null if not available
+     */
     @Override
     public String getURL() {
         return url;
     }
     
+    /**
+     * Retrieves the class representing the library, or null if it is not available.
+     * 
+     * @return the class representing the library, or null if not available
+     */
     @Override
     public Class<?> getLibClass() {
         return libClass;

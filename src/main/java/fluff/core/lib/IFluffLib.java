@@ -6,7 +6,7 @@ import java.util.List;
  * Interface representing a Fluff library.
  */
 public interface IFluffLib {
-	
+    
     /**
      * Retrieves the author of the library.
      * 
