@@ -1,4 +1,4 @@
-package fluff.core;
+package fluff.core.internal;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -16,8 +16,6 @@ import fluff.core.lib.LibraryException;
  * this class directly can cause unpredictable behavior and break the program. It is public only
  * for technical reasons and should not be used outside the library's internal mechanisms. Use only
  * if you fully understand its functionality and the risks involved.</p>
- * 
- * @internal
  */
 public class Dependency {
 	

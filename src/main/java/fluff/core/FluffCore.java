@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import fluff.core.internal.Dependency;
+import fluff.core.internal.DependencyResolver;
 import fluff.core.lib.IFluffLib;
 import fluff.core.lib.IFluffLibSupplier;
 import fluff.core.lib.LibraryMain;

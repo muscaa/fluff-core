@@ -2,7 +2,6 @@ package fluff.core.lib.info;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.rmi.UnexpectedException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,8 +18,7 @@ public class LibraryInfoReader {
      * Constructs a new LibraryInfoReader and populates the properties map with information read from the BufferedReader.
      * 
      * @param br the BufferedReader containing the library information
-     * @throws IOException if an error occurs while reading the information
-     * @throws UnexpectedException if the line is not a valid property
+     * @throws LibraryException if an error occurs while reading the information
      */
     public LibraryInfoReader(BufferedReader br) throws LibraryException {
         try {
