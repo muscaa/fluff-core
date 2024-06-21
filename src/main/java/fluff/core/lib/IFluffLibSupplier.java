@@ -1,6 +1,6 @@
 package fluff.core.lib;
 
-import fluff.core.lib.info.LibraryInfoReader;
+import java.io.BufferedReader;
 
 /**
  * Interface for supplying Fluff libraries.
@@ -10,13 +10,13 @@ import fluff.core.lib.info.LibraryInfoReader;
 public interface IFluffLibSupplier<V extends IFluffLib> {
     
     /**
-     * Creates a Fluff library using the provided LibraryInfoReader.
+     * Creates a Fluff library using the provided BufferedReader.
      * 
-     * @param reader the LibraryInfoReader to use for creating the library
+     * @param reader the BufferedReader used for reading properties and creating the library
      * @return the created Fluff library
      * @throws LibraryException if an error occurs while creating the library
      */
-    V createLibrary(LibraryInfoReader reader) throws LibraryException;
+    V createLibrary(BufferedReader reader) throws LibraryException;
     
     /**
      * Retrieves the unique tag associated with the given library.

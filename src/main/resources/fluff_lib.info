@@ -18,6 +18,8 @@ id fluff-core
 # depends muscaa/fluff-core # muscaa/fluff-core is always
                             # initialized first so its not
                             # needed, its just an example
+                            # To avoid a long line, use
+                            # the new line suffix '\'
 
 
 # (optional) The url where to find this library

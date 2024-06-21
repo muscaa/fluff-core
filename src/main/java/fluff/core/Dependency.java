@@ -11,8 +11,15 @@ import fluff.core.lib.LibraryException;
 /**
  * Represents a dependency in the Fluff library system.
  * Manages the loading and linking of dependencies and dependents.
+ * 
+ * <p><b>Warning:</b> This class is part of the library's internal implementation. Using or modifying
+ * this class directly can cause unpredictable behavior and break the program. It is public only
+ * for technical reasons and should not be used outside the library's internal mechanisms. Use only
+ * if you fully understand its functionality and the risks involved.</p>
+ * 
+ * @internal
  */
-class Dependency {
+public class Dependency {
 	
 	private final List<Dependency> dependents = new LinkedList<>();
 	private final List<Dependency> dependencies = new LinkedList<>();
@@ -22,7 +29,10 @@ class Dependency {
 	
 	private boolean loaded = false;
 	
-	int dependencyCount = 0;
+	/*
+	 * Count for unloaded dependencies.
+	 */
+	public int dependencyCount = 0;
 	
 	/**
 	 * Constructs a new Dependency with the specified supplier and library.

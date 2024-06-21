@@ -16,12 +16,18 @@ import java.util.Set;
 import fluff.core.lib.IFluffLib;
 import fluff.core.lib.IFluffLibSupplier;
 import fluff.core.lib.LibraryException;
-import fluff.core.lib.info.LibraryInfoReader;
 
 /**
  * Handles the resolution and loading of library dependencies.
+ * 
+ * <p><b>Warning:</b> This class is part of the library's internal implementation. Using or modifying
+ * this class directly can cause unpredictable behavior and break the program. It is public only
+ * for technical reasons and should not be used outside the library's internal mechanisms. Use only
+ * if you fully understand its functionality and the risks involved.</p>
+ * 
+ * @internal
  */
-class DependencyResolver {
+public class DependencyResolver {
 	
     public static final Map<String, IFluffLibSupplier> INFO_SUPPLIERS = new HashMap<>();
     public static final Map<String, Dependency> LOADED = new HashMap<>();
@@ -50,7 +56,7 @@ class DependencyResolver {
      * @param resolved the map of resolved dependencies to load
      * @throws LibraryException if an error occurs during loading
      */
-    private static void load(ClassLoader loader, Map<String, Dependency> resolved) throws LibraryException {
+    public static void load(ClassLoader loader, Map<String, Dependency> resolved) throws LibraryException {
     	Queue<Dependency> queue = new LinkedList<>();
     	
     	for (Map.Entry<String, Dependency> e : resolved.entrySet()) {
@@ -97,7 +103,7 @@ class DependencyResolver {
      * @return a map of resolved dependencies
      * @throws LibraryException if an error occurs during resolution
      */
-    private static Map<String, Dependency> resolve(List<URL> unresolved) throws LibraryException {
+    public static Map<String, Dependency> resolve(List<URL> unresolved) throws LibraryException {
     	Map<String, Dependency> resolved = new HashMap<>();
     	
     	for (int i = unresolved.size() - 1; i >= 0; i--) {
@@ -112,7 +118,7 @@ class DependencyResolver {
     				continue;
     			}
     			
-				IFluffLib lib = supplier.createLibrary(new LibraryInfoReader(br));
+				IFluffLib lib = supplier.createLibrary(br);
 				Dependency dep = new Dependency(supplier, lib);
 				
 				if (LOADED.containsKey(dep.getTag())) {
@@ -156,7 +162,7 @@ class DependencyResolver {
      * @param recursionStack the set of dependencies in the current recursion stack
      * @return true if a cycle is detected, false otherwise
      */
-    private static boolean detectCycle(Dependency dep, Set<String> visited, Set<String> recursionStack) {
+    public static boolean detectCycle(Dependency dep, Set<String> visited, Set<String> recursionStack) {
     	if (dep.isLoaded()) return false;
         if (recursionStack.contains(dep.getTag())) return true;
         if (visited.contains(dep.getTag())) return false;

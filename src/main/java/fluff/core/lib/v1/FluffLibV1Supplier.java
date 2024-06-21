@@ -1,5 +1,7 @@
 package fluff.core.lib.v1;
 
+import java.io.BufferedReader;
+
 import fluff.core.lib.IFluffLibSupplier;
 import fluff.core.lib.LibraryException;
 import fluff.core.lib.info.LibraryInfoReader;
@@ -12,8 +14,8 @@ public class FluffLibV1Supplier implements IFluffLibSupplier<FluffLibV1> {
     public static final String ID = "v1";
 	
     @Override
-    public FluffLibV1 createLibrary(LibraryInfoReader reader) throws LibraryException {
-        return new FluffLibV1(reader);
+    public FluffLibV1 createLibrary(BufferedReader reader) throws LibraryException {
+        return new FluffLibV1(new LibraryInfoReader(reader));
     }
 	
     @Override
