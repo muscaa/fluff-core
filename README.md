@@ -63,8 +63,8 @@ FluffCore.init();
 Copy the following text to `src/main/resources/fluff_lib.info` in your project and edit it as you wish:
 ```info
 v1
-# First line must always be the Lib Supplier ID you want
-# to use, without any comments after. If you dont know
+# First line must always be the library manager ID you want
+# to use, without any comments after. If you don't know
 # what this is, just leave it as default.
 
 
@@ -81,13 +81,15 @@ id fluff-core
 # separated by commas
 # depends muscaa/fluff-core # muscaa/fluff-core is always
                             # initialized first so its not
-                            # needed, its just an example
+                            # needed, it's just an example
+                            # To avoid a long line, use
+                            # the new line suffix '\'
 
 
 # (optional) The url where to find this library
-# url https://github.com/muscaa/fluff-core
+url https://github.com/muscaa/fluff-core
 
 
 # (optional) Main library class that will be initialized
-# class fluff.core.FluffCore
+class fluff.core.FluffCore
 ```
