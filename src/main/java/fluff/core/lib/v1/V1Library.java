@@ -1,37 +1,22 @@
 package fluff.core.lib.v1;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import fluff.core.lib.IFluffLib;
-import fluff.core.lib.ILoadableFluffLib;
+import fluff.core.lib.ILibrary;
 import fluff.core.lib.LibraryException;
-import fluff.core.lib.LibraryMain;
 import fluff.core.lib.info.LibraryInfoReader;
 
-/**
- * Implementation of the {@link IFluffLib} interface for version 1 library info supplier.
- */
-public class FluffLibV1 implements ILoadableFluffLib {
+public class V1Library implements ILibrary {
     
     private final String author;
     private final String id;
     private final Set<String> dependencies;
     private final String url;
-    private final String libClassName;
+    private final String mainClass;
     
-    private Class<?> libClass;
-    
-    /**
-     * Constructs a new FluffLibV1 instance using the provided LibraryInfoReader.
-     * 
-     * @param r the LibraryInfoReader containing the information required to initialize the library
-     * @throws LibraryException if an error occurs during initialization
-     */
-    public FluffLibV1(LibraryInfoReader r) throws LibraryException {
+    public V1Library(LibraryInfoReader r) throws LibraryException {
         author = r.required("author", "Property missing: author")
                 	.String();
         
@@ -55,31 +40,8 @@ public class FluffLibV1 implements ILoadableFluffLib {
         url = r.optional("url")
         			.String();
         
-        libClassName = r.optional("class")
+        mainClass = r.optional("class")
 	                .String();
-    }
-    
-    @Override
-    public void load(ClassLoader loader) throws LibraryException {
-    	if (libClassName == null) return;
-    	
-    	try {
-			libClass = loader.loadClass(libClassName);
-		} catch (ClassNotFoundException e) {
-			throw new LibraryException(e);
-		}
-    	
-    	for (Method m : libClass.getDeclaredMethods()) {
-            if (!m.isAnnotationPresent(LibraryMain.class)) continue;
-            if (!Modifier.isStatic(m.getModifiers())) continue;
-            
-            try {
-                m.setAccessible(true);
-                m.invoke(null);
-            } catch (Exception e) {
-                throw new LibraryException(e);
-            }
-        }
     }
     
     @Override
@@ -103,7 +65,7 @@ public class FluffLibV1 implements ILoadableFluffLib {
     }
     
     @Override
-    public Class<?> getLibClass() {
-        return libClass;
+    public String getMainClass() {
+        return mainClass;
     }
 }

@@ -1,4 +1,4 @@
-package fluff.core.lib;
+package fluff.core.lib.v1;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

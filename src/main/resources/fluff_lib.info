@@ -23,8 +23,8 @@ id fluff-core
 
 
 # (optional) The url where to find this library
-# url https://github.com/muscaa/fluff-core
+url https://github.com/muscaa/fluff-core
 
 
 # (optional) Main library class that will be initialized
-# class fluff.core.FluffCore
+class fluff.core.FluffCore
