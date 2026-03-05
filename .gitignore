@@ -1,13 +1,11 @@
-# Hidden Gradle & IDE dirs
+# Gradle & IDE dirs
 /.gradle/
 /.settings/
 /.idea/
-
-# Gradle & IDE dirs
 /bin/
 /build/
 /run/
 
-# Hidden IDE files
+# IDE files
 /.classpath
 /.project
