@@ -27,7 +27,7 @@ tasks.withType<Jar> {
 }
 
 mavenPublishing {
-    publishToMavenCentral(/*automaticRelease = true*/)
+    publishToMavenCentral(automaticRelease = true)
     signAllPublications()
     coordinates(project.group.toString(), project.name, project.version.toString())
 
